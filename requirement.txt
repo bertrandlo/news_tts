@@ -97,6 +97,7 @@ pykakasi==2.2.1
 pypinyin==0.50.0
 python-crfsuite==0.9.11
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 python-multipart==0.0.20
 pytz==2025.1
 PyYAML==6.0.2
