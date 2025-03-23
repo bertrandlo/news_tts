@@ -1,9 +1,11 @@
 import time
 import unittest
+from collections import deque
 
 import torch
 
-from news_util import extract_news_content, extract_news_header_link, news_feeder
+from news_util import extract_news_content, extract_news_header_link, extract_cna_news_header_link
+from news_util import extract_cna_news_content, news_feeder
 from multiprocessing import Process, Queue
 from MeloTTS.melo.api import TTS
 from bs4 import BeautifulSoup
@@ -27,6 +29,13 @@ class TestNews(unittest.TestCase):
         paragraphs = content.find_all('p')
         all_text = ' '.join(p.get_text(strip=True) for p in paragraphs)
         # story-list__news
+
+    def test_cna_news_list(self):
+        print(extract_cna_news_header_link())
+
+    def test_cna_news_content(self):
+        news_list = extract_cna_news_header_link()
+        print(extract_cna_news_content(news_list[10]))
 
     def test_news_feeder(self):
         q = Queue(3)

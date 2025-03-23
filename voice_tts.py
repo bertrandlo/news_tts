@@ -1,3 +1,4 @@
+import os
 import time
 import subprocess
 
@@ -6,7 +7,12 @@ from multiprocessing import Queue, Process
 from pcm_extraction import extract_pcm
 from tts_service import process_text_from_queue
 from news_util import news_feeder
+from dotenv import load_dotenv
 
+
+load_dotenv()
+PUBLISH_USERNAME = os.getenv('PUBLISH_USERNAME')
+PUBLISH_PASSWORD = os.getenv('PUBLISH_PASSWORD')
 
 def main():
     text_queue = Queue(maxsize=2)
@@ -21,7 +27,7 @@ def main():
     ffmpeg_cmd = [
         "ffmpeg",
         "-re",  # 實時播放
-        "-hwaccel", "cuvid",
+        "-hwaccel", "cuda",
         "-f", "s16le",
         "-ar", "44100",
         "-ac", "1",
@@ -29,8 +35,7 @@ def main():
         "-c:a", "libmp3lame",  # 使用 libmp3lame 進行 MP3 編碼
         "-b:a", "128k",  # 設定音訊比特率為 128 kbps
         "-f", "rtsp",
-        "-rtsp_transport", "tcp",
-        "rtsp://122.116.232.252:8554/music"
+        "-rtsp_transport", "tcp", "rtsp://{}:{}@192.168.1.2:8554/music".format(PUBLISH_USERNAME, PUBLISH_PASSWORD)
     ]
 
     process = subprocess.Popen(ffmpeg_cmd, stdin=subprocess.PIPE)
