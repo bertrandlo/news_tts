@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 PUBLISH_USERNAME = os.getenv('PUBLISH_USERNAME')
 PUBLISH_PASSWORD = os.getenv('PUBLISH_PASSWORD')
+NEWS_SUPPLIER = os.getenv('NEWS_SUPPLIER')
 
 def main():
     text_queue = Queue(maxsize=2)
@@ -20,7 +21,7 @@ def main():
     proc_tts = Process(target=process_text_from_queue, args=(text_queue, voice_queue), daemon=True)
     proc_tts.start()
 
-    proc_news = Process(target=news_feeder, args=(text_queue, ), daemon=True)
+    proc_news = Process(target=news_feeder, args=(text_queue, NEWS_SUPPLIER), daemon=True)
     proc_news.start()
     time.sleep(2)
 

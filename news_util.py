@@ -56,20 +56,26 @@ def extract_cna_news_content(url: str):
     return title.get_text() + " " + all_text
 
 
-def news_feeder(queue: Queue):
+def news_feeder(queue: Queue, news_supplier: str):
     news = deque()
 
     while True:
 
         if len(news) == 0:
-            stream_news_list = extract_yahoo_news_header_link()
+            if news_supplier == "CNA":
+                stream_news_list = extract_cna_news_header_link()
+            if news_supplier == "YAHOO":
+                stream_news_list = extract_yahoo_news_header_link()
             for elem in stream_news_list:
                 news.append(elem)
 
         if not queue.full():
             link = news.pop()
             try:
-                content = extract_yahoo_news_content(link)
+                if news_supplier == "CNA":
+                    content = extract_cna_news_content(link)
+                if news_supplier == "YAHOO":
+                    content = extract_yahoo_news_content(link)
                 queue.put(content)
             except DNSError:
                 continue
