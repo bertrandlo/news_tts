@@ -9,4 +9,7 @@
   - 接著透過 unidic 下載
   - 透過 NLTK 下載 英語斷句
     - ``` nltk.download('averaged_perceptron_tagger_eng') ```
-- 
+
+#### MeloTTS 採用 CPU 進行語音合成
+
+- 由於 MeloTTS 採用 CPU 運行速度夠快，沒有 cuda 仍可以考慮採用 CPU 進行合成。請將 pytorch 與 torchvision 替換成 CPU 版本。
